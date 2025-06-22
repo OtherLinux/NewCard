@@ -11,14 +11,14 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.self) var environment
     @Environment(\.modelContext) private var context
-    let testingData: [Card] = [Card()]
+    let testingData: [Card] = [Card(),Card()]
     
     @State var searchedTerm: String = ""
     @Query(sort: \Card.lastUsed, order: .reverse) var cardData: [Card]
     
     
     
-    var filteredCards: [Card] {
+    var filteredCards: [Card] { //Card filter
         guard !searchedTerm.isEmpty else {
             return cardData
         }
@@ -94,7 +94,8 @@ struct ContentView: View {
                         }
                         
                     }
-                    .padding(.top, 4)
+                    .padding(.horizontal,8)
+                    .padding(.top,4)
                 }
                 .scrollDismissesKeyboard(.interactively)
                 .navigationTitle("Your cards")

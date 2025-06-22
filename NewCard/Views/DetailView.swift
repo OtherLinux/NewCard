@@ -77,9 +77,9 @@ struct DetailView: View {
                     HStack {
                         Spacer()
                         Text(card.title)
-                            .font(.system(size: 48))
+                            .font(.largeTitle)
                             .fontWeight(.semibold)
-                            .lineLimit(1)
+                            .lineLimit(2)
                             .padding(.horizontal, 25)
                         Spacer()
                     }

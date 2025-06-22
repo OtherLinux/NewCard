@@ -12,6 +12,7 @@ struct CardEdit: View {
     @Environment(\.dismiss) var dismiss
     @State var bgColor: Color = Color.white
     @State var textColor: Color = Color.black
+    
     var types: [String] = ["barcode", "qr"]
     
     
@@ -29,13 +30,13 @@ struct CardEdit: View {
                     .autocorrectionDisabled(true)
                     .multilineTextAlignment(.trailing)
             }
-            ColorPicker(selection: $bgColor) {
+            ColorPicker(selection: $bgColor, supportsOpacity: false) {
                 Text("Background Color")
             }
             .onChange(of: bgColor, initial: false, {
                 card.setBackgroundColor(data: bgColor)
             })
-            ColorPicker(selection: $textColor) {
+            ColorPicker(selection: $textColor, supportsOpacity: false) {
                 Text("Text Color")
             }
             .onChange(of: textColor, initial: false, {
@@ -51,9 +52,11 @@ struct CardEdit: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .scrollDismissesKeyboard(.interactively)
         .cornerRadius(12)
-        .foregroundStyle(.black)
         .font(.title)
         .ignoresSafeArea(.all)
+        .onSubmit {
+            dismiss()
+        }
         .onAppear {
             textColor = card.getTextColor()
             bgColor = card.getBackgroundColor()

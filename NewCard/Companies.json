@@ -1,0 +1,32 @@
+
+[
+    {
+        "id": 1,
+        "name": "Billa",
+        "backgroundColor": [253,205,37,1],
+        "textColor": [255,255,255,1],
+        "codeType": "barcode"
+    },
+    {
+        "id": 2,
+        "name": "Tesco",
+        "backgroundColor": [25,70,150,1],
+        "textColor": [224,60,40,1],
+        "codeType": "barcode"
+    },
+    {
+        "id": 3,
+        "name": "Kaufland",
+        "backgroundColor": [255,255,255,1],
+        "textColor": [201,41,23,1],
+        "codeType": "qr"
+    },
+    {
+        "id": 4,
+        "name": "Lidl",
+        "backgroundColor": [245,233,52,1],
+        "textColor": [26,35,127,1],
+        "codeType": "barcode"
+    },
+]
+
