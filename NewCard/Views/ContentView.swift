@@ -76,7 +76,6 @@ struct ContentView: View {
                         ForEach(filteredCards, id: \.self) { card in
                             Button(action: {
                                 selectedCard = card
-                                
                                 UIScreen.main.brightness = CGFloat(1)
                             }) {
                                 Text(card.title)
