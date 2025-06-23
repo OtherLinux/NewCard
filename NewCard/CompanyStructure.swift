@@ -77,6 +77,15 @@ class Companies: ObservableObject {
         return nil
     }
     
+    func getCompanyByID(id: Int) -> Company? {
+        for company in self.companies {
+            if company.id == id {
+                return company
+            }
+        }
+        return nil
+    }
+    
 }
 
 var companiesGlobal = Companies()

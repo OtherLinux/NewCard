@@ -8,6 +8,18 @@
 import SwiftUI
 import SwiftData
 
+func getRandomColor() -> [Double] {
+    let minOffset = 0.45
+    var colorData = [Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0)]
+    
+    while (
+        abs(2 * colorData[0] - 1) < minOffset && abs(2 * colorData[1] - 1) < minOffset && abs(2 * colorData[2] - 1) < minOffset
+    ) {
+        colorData = [Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0)]
+    }
+    return colorData
+}
+
 struct CardCreationView: View {
     @State var companies: Companies = companiesGlobal
     @Environment(\.dismiss) var dismiss
@@ -50,14 +62,13 @@ struct CardCreationView: View {
                     creatingCustomCard = true
                     newCard = Card() //Resets card data. Fix to bug where users custom card could look the same as a company card
                     newCard.title = "Custom"
-                    let minOffset = 0.35
-                    var colorData = [Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0)]
-                    
-                    while (
-                        abs(2 * colorData[0] - 1) < minOffset && abs(2 * colorData[1] - 1) < minOffset && abs(2 * colorData[2] - 1) < minOffset
-                    ) {
-                        colorData = [Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0)]
-                    }
+                    let colorData = getRandomColor() /*[Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0)]
+                                                      
+                                                      while (
+                                                      abs(2 * colorData[0] - 1) < minOffset && abs(2 * colorData[1] - 1) < minOffset && abs(2 * colorData[2] - 1) < minOffset
+                                                      ) {
+                                                      colorData = [Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0), Double.random(in: 0.0..<1.0)]
+                                                      }*/
                     
                     newCard.setBackgroundColor(data:Color(red: colorData[0], green: colorData[1], blue: colorData[2]))
                     newCard.setTextColor(data: Color(red: (1 - colorData[0]), green: (1 - colorData[1]), blue: (1 - colorData[2])))
@@ -67,12 +78,12 @@ struct CardCreationView: View {
                         Image(systemName: "plus")
                         Text("New Card")
                     }
-                        .frame(maxWidth: .infinity, maxHeight: 150)
-                        .font(.system(size: 32))
-                        .fontWeight(.semibold)
-                        .background(Color.primary)
-                        .foregroundStyle(Color(.systemBackground))
-                        .cornerRadius(8)
+                    .frame(maxWidth: .infinity, maxHeight: 150)
+                    .font(.system(size: 32))
+                    .fontWeight(.semibold)
+                    .background(Color.primary)
+                    .foregroundStyle(Color(.systemBackground))
+                    .cornerRadius(8)
                 }
                 .shadow(radius: 2)
                 .buttonStyle(PlainButtonStyle())
@@ -142,28 +153,31 @@ struct CardCreationView: View {
                 }
         }
         .sheet(isPresented: $isShowing, onDismiss: { //Scanner
-            if (scannedData != "" && scannedData.range(of: "^[a-zA-Z0-9]+$", options: .regularExpression) != nil) {
-                var foundMatch:Bool = false
-                for card in cardData {
-                    if (scannedData == card.data) {
-                        foundMatch = true
+            if (scannedData != "") {
+                if (scannedData.range(of: "^[a-zA-Z0-9]+$", options: .regularExpression) != nil) {
+                    var foundMatch:Bool = false
+                    for card in cardData {
+                        if (scannedData == card.data) {
+                            foundMatch = true
+                        }
+                    }
+                    if (!foundMatch) {
+                        newCard.data = scannedData
+                        modelContext.insert(newCard)
+                        if (creatingCustomCard) {
+                            editingMenuShown = true
+                        } else {
+                            dismiss()
+                        }
+                    }
+                    else {
+                        showAlert = true
                     }
                 }
-                if (!foundMatch) {
-                    newCard.data = scannedData
-                    modelContext.insert(newCard)
-                    if (creatingCustomCard) {
-                        editingMenuShown = true
-                    } else {
-                        dismiss()
-                    }
-                }
+                
                 else {
-                    showAlert = true
+                    alertFormatIssue = true
                 }
-            }
-            else {
-                alertFormatIssue = true
             }
         }) {
             ZStack {
