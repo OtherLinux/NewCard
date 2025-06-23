@@ -66,9 +66,13 @@ struct CardEdit: View {
         .font(.title)
         .ignoresSafeArea(.all)
         .onSubmit {
+            print(card.getRawBackgroundColor())
+            print(card.getRawTextColor())
             dismiss()
         }
         .onAppear {
+            print(card.getRawBackgroundColor())
+            print(card.getRawTextColor())
             textColor = card.getTextColor()
             bgColor = card.getBackgroundColor()
         }

@@ -61,6 +61,22 @@ struct DetailView: View {
                             Button(action: {showEditing = true}) {
                                 Label("Edit",systemImage: "pencil")
                             }
+                            Button(action: {
+                                let colorData = getRandomColor()
+                                withAnimation() {
+                                    card.setBackgroundColor(data:Color(red: colorData[0], green: colorData[1], blue: colorData[2]))
+                                    card.setTextColor(data: Color(red: (1 - colorData[0]), green: (1 - colorData[1]), blue: (1 - colorData[2])))
+                                }
+                            }) {
+                                Label("Random Colors",systemImage: "dice")
+                            }
+                            if let comp = companiesGlobal.getCompanyByID(id: card.companyId) {
+                                if (comp.getRawBackgroundColor() != card.getRawBackgroundColor() || comp.getRawTextColor() != card.getRawTextColor()) {
+                                    Button(action: {withAnimation() {card.setDataFromCompany(data: comp)}}) {
+                                        Label("Reset colors",systemImage: "arrowshape.turn.up.backward")
+                                    }
+                                }
+                            }
                             Button(action: {showAlert = true}) {
                                 Label("Remove",systemImage: "trash")
                             }

@@ -16,16 +16,17 @@ class Card {
         self.backgroundColor = data.getRawBackgroundColor()
         self.textColor = data.getRawTextColor()
         self.codeType = data.codeType
+        self.companyId = data.id
     }
     
     private func getArrayFromColor(data:Color) -> [Double] {
         @Environment(\.self) var environment
         let colorData = data.resolve(in: environment)
         return [
-            Double(colorData.red)*255,
-            Double(colorData.green)*255,
-            Double(colorData.blue)*255,
-            Double(colorData.opacity),
+            round(Double(colorData.red)*255),
+            round(Double(colorData.green)*255),
+            round(Double(colorData.blue)*255),
+            round(Double(colorData.opacity)),
         ]
     }
     
@@ -50,7 +51,17 @@ class Card {
         textColor = getArrayFromColor(data: data)
     }
     
-    var id = UUID()
+    public func getRawBackgroundColor() -> [Double] {
+        return backgroundColor
+    }
+    
+    public func getRawTextColor() -> [Double] {
+        return textColor
+    }
+    
+    
+    public var id = UUID()
+    public var companyId: Int = 0
     public var title: String = "Default"
     public var data: String = "Error"
     public var lastUsed: Int = Int(Date().timeIntervalSince1970 * 1000)
