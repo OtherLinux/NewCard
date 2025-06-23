@@ -103,11 +103,20 @@ struct DetailView: View {
                             .aspectRatio(contentMode: .fit)
                         
                     }
-                    Text(card.data)
-                        .foregroundStyle(.black)
-                        .font(.footnote)
-                        .offset(y:-30)
-                        .padding()
+                    if (card.data != "") {
+                        Text(card.data)
+                            .foregroundStyle(.black)
+                            .font(.footnote)
+                            .offset(y:-30)
+                            .padding()
+                    }
+                    else {
+                        Text("No card data")
+                            .foregroundStyle(.black)
+                            .font(.footnote)
+                            .offset(y:-30)
+                            .padding()
+                    }
                     
                 }
                 .background(Color.white)

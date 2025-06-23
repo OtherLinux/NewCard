@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CardEdit: View {
     @Binding var card: Card
+    @State var lastCardData: String?
     @Environment(\.dismiss) var dismiss
     @State var bgColor: Color = Color.white
     @State var textColor: Color = Color.black
@@ -29,6 +30,16 @@ struct CardEdit: View {
                 TextField(text:$card.data, prompt: Text("Card Data")) {}
                     .autocorrectionDisabled(true)
                     .multilineTextAlignment(.trailing)
+                    .onChange(of: card.data, initial: true) {
+                        if (card.data.range(of: "^[a-zA-Z0-9]*$", options: .regularExpression) != nil){
+                            lastCardData = card.data
+                        } else {
+                            if let lastData = lastCardData {
+                                card.data = lastData
+                            }
+                        }
+                        
+                    }
             }
             ColorPicker(selection: $bgColor, supportsOpacity: false) {
                 Text("Background Color")

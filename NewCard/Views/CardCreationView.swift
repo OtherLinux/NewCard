@@ -36,6 +36,7 @@ struct CardCreationView: View {
     @State var editingMenuShown: Bool = false
     
     @State var showAlert: Bool = false
+    @State var alertFormatIssue: Bool = false
     
     @State var startingLocation: CGPoint?
     @State var dismissal: Bool = false
@@ -124,6 +125,11 @@ struct CardCreationView: View {
         } message: {
             Text("This card already exists \n Do you want to add it anyway?")
         }
+        .alert("Format issue", isPresented: $alertFormatIssue) { //Warns when card code data is duplicate
+            Button("Okay", role: .cancel, action: {alertFormatIssue = false})
+        } message: {
+            Text("Received data is not allowed, please scan again")
+        }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .sheet(isPresented: $editingMenuShown, onDismiss: {
             dismiss()
@@ -136,7 +142,7 @@ struct CardCreationView: View {
                 }
         }
         .sheet(isPresented: $isShowing, onDismiss: { //Scanner
-            if (scannedData != "") {
+            if (scannedData != "" && scannedData.range(of: "^[a-zA-Z0-9]+$", options: .regularExpression) != nil) {
                 var foundMatch:Bool = false
                 for card in cardData {
                     if (scannedData == card.data) {
@@ -155,6 +161,9 @@ struct CardCreationView: View {
                 else {
                     showAlert = true
                 }
+            }
+            else {
+                alertFormatIssue = true
             }
         }) {
             ZStack {

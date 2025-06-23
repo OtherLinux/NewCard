@@ -79,7 +79,8 @@ struct ContentView: View {
                                 UIScreen.main.brightness = CGFloat(1)
                             }) {
                                 Text(card.title)
-                                    .frame(width:175, height: 100)
+                                    .frame(width:155, height: 100)
+                                    .padding(.horizontal, 10)
                                     .font(.system(size: 32))
                                     .fontWeight(.bold)
                                     .background(card.getBackgroundColor())
